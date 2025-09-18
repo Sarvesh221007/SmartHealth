@@ -15,7 +15,7 @@ export default function Register() {
     e.preventDefault();
     try {
       await API.post("/api/auth/register", form);
-      const { data } = await API.post("/auth/login", { email: form.email, password: form.password });
+      const { data } = await API.post("/api/auth/login", { email: form.email, password: form.password });
       login(data);
       navigate(data.user.role === "doctor" ? "/doctor" : "/dashboard");
     } catch (err) {

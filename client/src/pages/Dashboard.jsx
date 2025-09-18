@@ -1,30 +1,79 @@
 import { useState } from "react";
 import API from "../utils/api";
-import { Menu } from "lucide-react"; // hamburger icon
 
 const diseaseFields = {
-  diabetes: ["pregnancies", "glucose", "bloodPressure", "skinThickness", "insulin", "bmi", "diabetesPedigree", "age"],
-  heart: ["age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal"],
-  parkinsons: ["MDVP_Fo", "MDVP_Fhi", "MDVP_Flo", "MDVP_Jitter", "MDVP_Shimmer", "NHR", "HNR", "RPDE", "DFA", "spread1", "spread2", "D2", "PPE"],
-  cancer: ["radius_mean", "texture_mean", "perimeter_mean", "area_mean", "smoothness_mean", "compactness_mean", "concavity_mean", "concavePoints_mean", "symmetry_mean", "fractal_dimension_mean"],
+  diabetes: [
+    "pregnancies",
+    "glucose",
+    "bloodPressure",
+    "skinThickness",
+    "insulin",
+    "bmi",
+    "diabetesPedigree",
+    "age",
+  ],
+  heart: [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "exang",
+    "oldpeak",
+    "slope",
+    "ca",
+    "thal",
+  ],
+  parkinsons: [
+    "MDVP_Fo",
+    "MDVP_Fhi",
+    "MDVP_Flo",
+    "MDVP_Jitter",
+    "MDVP_Shimmer",
+    "NHR",
+    "HNR",
+    "RPDE",
+    "DFA",
+    "spread1",
+    "spread2",
+    "D2",
+    "PPE",
+  ],
+  cancer: [
+    "radius_mean",
+    "texture_mean",
+    "perimeter_mean",
+    "area_mean",
+    "smoothness_mean",
+    "compactness_mean",
+    "concavity_mean",
+    "concavePoints_mean",
+    "symmetry_mean",
+    "fractal_dimension_mean",
+  ],
 };
 
 export default function Dashboard() {
   const [selectedDisease, setSelectedDisease] = useState("diabetes");
-  const [form, setForm] = useState(Object.fromEntries(diseaseFields["diabetes"].map((f) => [f, ""])));
+  const [form, setForm] = useState(
+    Object.fromEntries(diseaseFields[selectedDisease].map((f) => [f, ""]))
+  );
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Update form when disease changes
   const handleDiseaseChange = (disease) => {
     setSelectedDisease(disease);
     setForm(Object.fromEntries(diseaseFields[disease].map((f) => [f, ""])));
     setResult(null);
     setError("");
-    setSidebarOpen(false); // close sidebar on mobile after selecting
   };
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,20 +88,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Mobile Toggle Button */}
-      <button
-        className="md:hidden p-4 absolute top-2 left-2 z-20 text-gray-700"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-      >
-        <Menu size={28} />
-      </button>
-
+    <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <div
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-white shadow p-6 transform transition-transform duration-300 z-10 
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
-      >
+      <div className="w-64 bg-white shadow p-6">
         <h2 className="text-xl font-bold mb-4">Select Disease</h2>
         <ul className="space-y-2">
           {Object.keys(diseaseFields).map((disease) => (
@@ -69,10 +107,11 @@ export default function Dashboard() {
         </ul>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 md:ml-0 mt-12 md:mt-0">
+      {/* Main Dashboard */}
+      <div className="flex-1 p-6">
         <h2 className="text-2xl font-bold mb-4">
-          {selectedDisease.charAt(0).toUpperCase() + selectedDisease.slice(1)} Prediction
+          {selectedDisease.charAt(0).toUpperCase() + selectedDisease.slice(1)}{" "}
+          Prediction
         </h2>
 
         {error && <p className="text-red-500 mb-3">{error}</p>}
@@ -97,13 +136,14 @@ export default function Dashboard() {
         </form>
 
         {result && (
-          <div className="mt-6 p-4 bg-white rounded shadow">
+          <div className="mt-6 p-4 bg-gray-100 rounded shadow">
             <h3 className="text-xl font-bold">Prediction Result</h3>
             <p>
               <strong>Disease:</strong> {result.disease}
             </p>
             <p>
-              <strong>Probability:</strong> {(result.probability * 100).toFixed(2)}%
+              <strong>Probability:</strong>{" "}
+              {(result.probability * 100).toFixed(2)}%
             </p>
           </div>
         )}

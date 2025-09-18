@@ -14,9 +14,14 @@ app.use(express.json());
 
 // Enable CORS for your frontend
 app.use(cors({
-  origin: "http://localhost:5173", // frontend URL
-  credentials: true,               // if you are sending cookies or auth headers
+  origin: [
+    "http://localhost:5173", // for local dev
+    "https://smart-health-orpin.vercel.app",
+    "https://smart-health-git-main-sarvesh221007s-projects.vercel.app"
+  ],
+  credentials: true,
 }));
+
 
 // Connect to DB
 connectDB();

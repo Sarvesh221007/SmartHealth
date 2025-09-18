@@ -14,7 +14,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post("/api/api/auth/login", form);
+      const { data } = await API.post("/api/auth/login", form);
       login(data);
       navigate(data.user.role === "doctor" ? "/doctor" : "/dashboard");
     } catch (err) {
@@ -24,7 +24,7 @@ export default function Login() {
 
   const handleGoogleLogin = async (credentialResponse) => {
     try {
-      const { data } = await API.post("/auth/google-login", { token: credentialResponse.credential });
+      const { data } = await API.post("/api/auth/google-login", { token: credentialResponse.credential });
       login(data);
       navigate(data.user.role === "doctor" ? "/doctor" : "/dashboard");
     } catch (err) {

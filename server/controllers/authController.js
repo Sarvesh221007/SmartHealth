@@ -31,3 +31,22 @@ exports.loginUser = async (req,res)=>{
     res.status(500).json({ error: err.message });
   }
 };
+
+
+exports.refreshToken = async (req, res) => {
+  try {
+    const token = req.cookies.refreshToken;
+    if (!token) return res.status(401).json({ error: "No refresh token" });
+
+    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+
+    const newToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+
+    res.status(200).json({ token: newToken, user: { id: user._id, role: user.role, name: user.name } });
+  } catch (err) {
+    res.status(403).json({ error: "Invalid refresh token" });
+  }
+};

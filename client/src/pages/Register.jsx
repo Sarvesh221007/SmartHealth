@@ -14,7 +14,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/auth/register", form);
+      await API.post("/api/auth/register", form);
       const { data } = await API.post("/auth/login", { email: form.email, password: form.password });
       login(data);
       navigate(data.user.role === "doctor" ? "/doctor" : "/dashboard");

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://smarthealth-backend-964r.onrender.com", // your backend URL
+  baseURL: "https://smarthealth-backend-964r.onrender.com/api", // your backend URL
 });
 
 // Attach token automatically

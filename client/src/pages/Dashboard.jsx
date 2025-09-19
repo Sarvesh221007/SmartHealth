@@ -36,7 +36,7 @@ export default function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post(`/predict/${selectedDisease}`, form);
+      const { data } = await API.post(`/api/predict/${selectedDisease}`, form);
       setResult(data);
       setError("");
     } catch (err) {
